@@ -12,6 +12,7 @@ class TrimSliderStyle {
     this.lineColor = Colors.white60,
     this.onTrimmingColor = kDefaultSelectedColor,
     this.onTrimmedColor = kDefaultSelectedColor,
+    this.onTrimmingStoppedColor = kDefaultSelectedColor,
     this.lineWidth = 2,
     this.borderRadius = 5.0,
     // edges
@@ -53,6 +54,11 @@ class TrimSliderStyle {
   ///
   /// Defaults to [kDefaultSelectedColor]
   final Color onTrimmedColor;
+
+  /// The [onTrimmingStoppedColor] param specifies the color of the borders around the trimmed area when user stops trimming
+  ///
+  /// Defaults to [kDefaultSelectedColor]
+  final Color onTrimmingStoppedColor;
 
   /// The [lineWidth] param specifies the width of the borders around the trimmed area
   ///
@@ -96,6 +102,5 @@ class TrimSliderStyle {
   final IconData? rightIcon;
 
   /// Returns left and right line width depending on [edgesType]
-  double get edgeWidth =>
-      edgesType == TrimSliderEdgesType.bar ? edgesSize : lineWidth;
+  double get edgeWidth => edgesType == TrimSliderEdgesType.bar ? edgesSize : lineWidth;
 }

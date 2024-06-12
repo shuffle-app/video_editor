@@ -260,10 +260,10 @@ class TrimSliderPainter extends CustomPainter {
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromPoints(
-          Offset(position - style.positionLineWidth / 2, -style.lineWidth * 2),
+          Offset(position - style.positionLineWidth / 2, style.lineWidth * 2),
           Offset(
             position + style.positionLineWidth / 2,
-            size.height + style.lineWidth * 2,
+            size.height - (style.lineWidth * 2),
           ),
         ),
         Radius.circular(style.positionLineWidth),
@@ -277,36 +277,30 @@ class TrimSliderPainter extends CustomPainter {
     required Offset centerLeft,
     required Offset centerRight,
   }) {
-    final halfIconSize = Offset(style.iconSize / 2, style.iconSize / 2);
-
     // LEFT ICON
     if (style.leftIcon != null) {
-      TextPainter leftArrow = TextPainter(textDirection: TextDirection.rtl);
-      leftArrow.text = TextSpan(
-        text: String.fromCharCode(style.leftIcon!.codePoint),
-        style: TextStyle(
-          fontSize: style.iconSize,
-          fontFamily: style.leftIcon!.fontFamily,
-          color: style.iconColor,
-        ),
+      final leftIconRect = Rect.fromCenter(
+        center: centerLeft,
+        width: 2,
+        height: style.iconSize,
       );
-      leftArrow.layout();
-      leftArrow.paint(canvas, centerLeft - halfIconSize);
+      Paint paint = Paint()
+        ..color = style.iconColor
+        ..style = PaintingStyle.fill;
+      canvas.drawRect(leftIconRect, paint);
     }
 
     // RIGHT ICON
     if (style.rightIcon != null) {
-      TextPainter rightArrow = TextPainter(textDirection: TextDirection.rtl);
-      rightArrow.text = TextSpan(
-        text: String.fromCharCode(style.rightIcon!.codePoint),
-        style: TextStyle(
-          fontSize: style.iconSize,
-          fontFamily: style.rightIcon!.fontFamily,
-          color: style.iconColor,
-        ),
+      final rightIconRect = Rect.fromCenter(
+        center: centerRight,
+        width: 2,
+        height: style.iconSize,
       );
-      rightArrow.layout();
-      rightArrow.paint(canvas, centerRight - halfIconSize);
+      Paint paint = Paint()
+        ..color = style.iconColor
+        ..style = PaintingStyle.fill;
+      canvas.drawRect(rightIconRect, paint);
     }
   }
 

@@ -2,9 +2,9 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:video_editor/src/controller.dart';
+import 'package:video_editor/src/models/transform_data.dart';
 import 'package:video_editor/src/utils/helpers.dart';
 import 'package:video_editor/src/utils/thumbnails.dart';
-import 'package:video_editor/src/models/transform_data.dart';
 import 'package:video_editor/src/widgets/crop/crop_grid_painter.dart';
 import 'package:video_editor/src/widgets/image_viewer.dart';
 import 'package:video_editor/src/widgets/transform.dart';
@@ -27,8 +27,7 @@ class ThumbnailSlider extends StatefulWidget {
 
 class _ThumbnailSliderState extends State<ThumbnailSlider> {
   final ValueNotifier<Rect> _rect = ValueNotifier<Rect>(Rect.zero);
-  final ValueNotifier<TransformData> _transform =
-      ValueNotifier<TransformData>(const TransformData());
+  final ValueNotifier<TransformData> _transform = ValueNotifier<TransformData>(const TransformData());
 
   /// The max width of [ThumbnailSlider]
   double _sliderWidth = 1.0;
@@ -82,9 +81,7 @@ class _ThumbnailSliderState extends State<ThumbnailSlider> {
 
   /// Returns the max size the layout should take with the rect value
   Size _calculateMaxLayout() {
-    final ratio = _rect.value == Rect.zero
-        ? widget.controller.video.value.aspectRatio
-        : _rect.value.size.aspectRatio;
+    final ratio = _rect.value == Rect.zero ? widget.controller.video.value.aspectRatio : _rect.value.size.aspectRatio;
 
     // check if the ratio is almost 1
     if (isNumberAlmost(ratio, 1)) return Size.square(widget.height);
@@ -115,23 +112,37 @@ class _ThumbnailSliderState extends State<ThumbnailSlider> {
                   itemBuilder: (_, i) => ValueListenableBuilder<TransformData>(
                     valueListenable: _transform,
                     builder: (_, transform, __) {
-                      final index =
-                          getBestIndex(_neededThumbnails, data!.length, i);
+                      final index = getBestIndex(_neededThumbnails, data!.length, i);
 
-                      return Stack(
-                        children: [
-                          _buildSingleThumbnail(
-                            data[0],
-                            transform,
-                            isPlaceholder: true,
-                          ),
-                          if (index < data.length)
-                            _buildSingleThumbnail(
-                              data[index],
-                              transform,
-                              isPlaceholder: false,
+                      return Container(
+                        width: _sliderWidth / _neededThumbnails,
+                        decoration: BoxDecoration(
+                          border: Border.symmetric(
+                            vertical: BorderSide(
+                              color: widget.controller.isTrimming
+                                  ? widget.controller.trimStyle.onTrimmingColor
+                                  : !widget.controller.isTrimming && !widget.controller.isTrimmed
+                                      ? widget.controller.trimStyle.onTrimmingStoppedColor
+                                      : widget.controller.trimStyle.onTrimmingStoppedColor,
+                              width: 1,
                             ),
-                        ],
+                          ),
+                        ),
+                        child: Stack(
+                          children: [
+                            _buildSingleThumbnail(
+                              data[0],
+                              transform,
+                              isPlaceholder: true,
+                            ),
+                            if (index < data.length)
+                              _buildSingleThumbnail(
+                                data[index],
+                                transform,
+                                isPlaceholder: false,
+                              ),
+                          ],
+                        ),
                       );
                     },
                   ),

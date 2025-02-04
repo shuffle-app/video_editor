@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_video_thumbnail_plus/flutter_video_thumbnail_plus.dart';
 import 'package:video_editor/src/controller.dart';
 import 'package:video_editor/src/models/cover_data.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 Stream<List<Uint8List>> generateTrimThumbnails(
   VideoEditorController controller, {
@@ -15,8 +15,8 @@ Stream<List<Uint8List>> generateTrimThumbnails(
 
   for (int i = 1; i <= quantity; i++) {
     try {
-      final Uint8List? bytes = await VideoThumbnail.thumbnailData(
-        imageFormat: ImageFormat.JPEG,
+      final Uint8List? bytes = await FlutterVideoThumbnailPlus.thumbnailData(
+        imageFormat: ImageFormat.jpeg,
         video: path,
         timeMs: (eachPart * i).toInt(),
         quality: controller.trimThumbnailsQuality,
@@ -72,8 +72,8 @@ Future<CoverData> generateSingleCoverThumbnail(
   int timeMs = 0,
   int quality = 10,
 }) async {
-  final Uint8List? thumbData = await VideoThumbnail.thumbnailData(
-    imageFormat: ImageFormat.JPEG,
+  final Uint8List? thumbData = await FlutterVideoThumbnailPlus.thumbnailData(
+    imageFormat: ImageFormat.jpeg,
     video: filePath,
     timeMs: timeMs,
     quality: quality,

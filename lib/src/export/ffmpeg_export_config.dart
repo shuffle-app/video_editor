@@ -3,11 +3,11 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_video_thumbnail_plus/flutter_video_thumbnail_plus.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:video_editor/src/controller.dart';
 import 'package:video_editor/src/models/file_format.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 class FFmpegVideoEditorExecute {
   const FFmpegVideoEditorExecute({
@@ -226,8 +226,8 @@ class CoverFFmpegVideoEditorConfig extends FFmpegVideoEditorConfig {
   /// Generate this selected cover image as a JPEG [File]
   ///
   /// If this controller's [selectedCoverVal] is `null`, then it return the first frame of this video.
-  Future<String?> _generateCoverFile() async => VideoThumbnail.thumbnailFile(
-        imageFormat: ImageFormat.JPEG,
+  Future<String?> _generateCoverFile() async => FlutterVideoThumbnailPlus.thumbnailFile(
+        imageFormat: ImageFormat.jpeg,
         thumbnailPath: (await getTemporaryDirectory()).path,
         video: controller.file.path,
         timeMs: controller.selectedCoverVal?.timeMs ??
